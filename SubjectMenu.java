@@ -6,14 +6,14 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 public class SubjectMenu extends JPanel implements ListSelectionListener
-{
-    private static JList<String> list;
+{	
+	public static JList<String> list;
     private DefaultListModel<String> listModel;
     private static final String addString = "ADD";
     private static final String removeString = "REMOVE";
     private static JButton removeButton;
     private static JTextField classField;
-    public static ArrayList<String> classes = new ArrayList<String>();
+    public static ArrayList<MetroClass> classes = new ArrayList<MetroClass>();
     
     public SubjectMenu()
     {
@@ -64,8 +64,11 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
         {
             int index = list.getSelectedIndex();
             if(index == 0) { return; }
-            classes.remove((String)list.getSelectedValue());
-            for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i)); }
+            for(int i = 0; i < classes.size(); i++)
+    		{
+    			if(classes.get(i).getName().equals(list.getSelectedValue())) { classes.remove(i); }
+    		}
+            for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i).getName()); }
             //System.out.println("Selected Value: " + list.getSelectedValue());
             listModel.remove(index);
             int size = listModel.getSize();
@@ -102,8 +105,8 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
             int index = list.getSelectedIndex(); 
             if(index == -1) { index = 0; } else { index++; }
             listModel.insertElementAt(classField.getText(), index);
-            classes.add(classField.getText());
-            for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i)); }
+            classes.add(new MetroClass(classField.getText()));
+            for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i).getName()); }
             classField.requestFocusInWindow();
             classField.setText("");
             list.setSelectedIndex(index);
@@ -161,12 +164,17 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
     	{
     		FileInputStream fileIn = new FileInputStream("src/classes.save");
     		ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-    		classes = (ArrayList<String>)objectIn.readObject();
+    		classes = (ArrayList<MetroClass>)objectIn.readObject();
     		objectIn.close();
-    	} catch(Exception e) { System.err.println("Exception caught on 'loadClasses': " + e.getMessage()); }
+    	} 
+    	catch(Exception e) 
+    	{ 
+    		System.err.println("Exception caught on 'loadClasses': " + e); 
+    		e.printStackTrace();
+    	}
     	for(int i = 0; i < classes.size(); i++)
     	{
-    		listModel.insertElementAt(classes.get(i), i + 1);
+    		listModel.insertElementAt(classes.get(i).getName(), i + 1);
     	}
     }
     public static void saveClasses()
@@ -177,6 +185,11 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
     		ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
     		objectOut.writeObject(classes);
     		objectOut.close();
-    	} catch(Exception e) { System.err.println("Exception caught on 'saveClasses': " + e); }	
+    	} 
+    	catch(Exception e) 
+    	{ 
+    		System.err.println("Exception caught on 'saveClasses': " + e);
+    		e.printStackTrace();
+    	}	
     }
 }

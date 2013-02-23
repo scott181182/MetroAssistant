@@ -15,11 +15,7 @@ public class FrameCore
 		initComponents();
 		frame.addWindowListener(new java.awt.event.WindowAdapter() 
 		{
-        	@Override
-        	public void windowClosing(java.awt.event.WindowEvent evt)
-        	{
-        		saveComponents();
-        	}
+        	@Override public void windowClosing(java.awt.event.WindowEvent evt) { saveComponents(); }
         });
 	}
 	private static void establishFrame()
@@ -38,17 +34,34 @@ public class FrameCore
     {
     	if(priority == 1)
     	{
-    		
+    		//System.out.println("Priority #1, index - " + index);
+    		removeMenus(index);
     	} 
     	else if(priority == 2)
     	{
+    		//System.out.println("Priority #2, index - " + index);
     		
     	}
     	else if(priority == 3)
     	{
-    		
+    		//System.out.println("Priority #3, index - " + index);
+
     	}
     	else System.err.println("Null priority on menu change: " + priority);
+    }
+    private static void removeMenus(int index)
+    {
+    	if(index == 0) 
+    	{
+    		MainFrame.overviewMenu.revalidate();
+    		MainFrame.overviewMenu.repaint();
+    		MainFrame.overviewMenu.setVisible(true);
+    	}
+    	else 
+    	{
+    		MainFrame.overviewMenu.setVisible(false); 
+    		MainFrame.overviewMenu.removeAll();
+    	}
     }
     public Graphics2D getGraphics()
     {

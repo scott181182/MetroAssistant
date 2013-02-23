@@ -10,29 +10,37 @@ import javax.swing.JPanel;
 public class MainFrame extends JFrame
 {
 	public static DataFinder input = new DataFinder();
+	public static JPanel subjectMenu, overviewMenu;
+	public static JPanel[] topMenus = { overviewMenu };
 	
 	public MainFrame()
 	{
     	setTitle("MetroAssistant");
     	setName("MetroAssistant");
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	setIgnoreRepaint(true);
+    	//setIgnoreRepaint(true);
     	setResizable(false);
         setSize(1280, 723);
         Container contentPane = getContentPane();
         contentPane.setLayout(null);
         addSubjectMenu();
-        addKeyListener(input);
-        addMouseListener(input);
+        addOverviewMenu();
         setVisible(true);
         createBufferStrategy(2);
 	}
-    public void addSubjectMenu() 
+    public void addSubjectMenu()
     {
-        JPanel subjectMenu = new SubjectMenu();
+        subjectMenu = new SubjectMenu();
         subjectMenu.setBounds(0, 0, 320, 723);
         subjectMenu.setOpaque(true);
         getContentPane().add(subjectMenu);
+    }
+    public void addOverviewMenu()
+    {
+    	overviewMenu = new OverviewMenu();
+    	overviewMenu.setBounds(320, 0, 960, 723);
+    	overviewMenu.setOpaque(true);
+    	getContentPane().add(overviewMenu);
     }
     
     /*
