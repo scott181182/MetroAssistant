@@ -4,9 +4,10 @@ import javax.swing.*;
 
 public class FrameCore
 {
-	private static MainFrame frame;
+	public static MainFrame frame;
 	private static GraphicsDevice graphicsDevice;
 	public static DataFinder input = new DataFinder();
+	
 	public static void main(String[] args)
 	{
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -32,36 +33,8 @@ public class FrameCore
 	}
     public static void menuHandler(int priority, int index)
     {
-    	if(priority == 1)
-    	{
-    		//System.out.println("Priority #1, index - " + index);
-    		removeMenus(index);
-    	} 
-    	else if(priority == 2)
-    	{
-    		//System.out.println("Priority #2, index - " + index);
-    		
-    	}
-    	else if(priority == 3)
-    	{
-    		//System.out.println("Priority #3, index - " + index);
-
-    	}
-    	else System.err.println("Null priority on menu change: " + priority);
-    }
-    private static void removeMenus(int index)
-    {
-    	if(index == 0) 
-    	{
-    		MainFrame.overviewMenu.revalidate();
-    		MainFrame.overviewMenu.repaint();
-    		MainFrame.overviewMenu.setVisible(true);
-    	}
-    	else 
-    	{
-    		MainFrame.overviewMenu.setVisible(false); 
-    		MainFrame.overviewMenu.removeAll();
-    	}
+    	MenuHandler.removeMenus(priority);
+    	MenuHandler.updateMenu(priority, index);
     }
     public Graphics2D getGraphics()
     {

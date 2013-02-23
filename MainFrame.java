@@ -10,7 +10,8 @@ import javax.swing.JPanel;
 public class MainFrame extends JFrame
 {
 	public static DataFinder input = new DataFinder();
-	public static JPanel subjectMenu, overviewMenu;
+	public static SubjectMenu subjectMenu;
+	public static OverviewMenu overviewMenu;
 	public static JPanel[] topMenus = { overviewMenu };
 	
 	public MainFrame()
