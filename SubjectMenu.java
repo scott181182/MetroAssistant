@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -63,14 +64,28 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
         public void actionPerformed(ActionEvent e) 
         {
             int index = list.getSelectedIndex();
+            String className = classes.get(index - 1).getName();
             if(index == 0) { return; }
+            if(JOptionPane.showOptionDialog(FrameCore.frame, "Are you sure you want to delete " + className + "? \n" + "This will delete all files associated with this class, \n" + "i.e. Homework, Assignments, Grades, Notes, etc.", "Delete this class?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null) == JOptionPane.NO_OPTION) { return; }
             for(int i = 0; i < classes.size(); i++)
     		{
     			if(classes.get(i).getName().equals(list.getSelectedValue())) { classes.remove(i); }
     		}
-            for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i).getName()); }
-            //System.out.println("Selected Value: " + list.getSelectedValue());
+            //for(int i = 0; i < classes.size(); i++) { System.out.println(classes.get(i).getName()); }
             listModel.remove(index);
+            Path hwFile = new File("data/homework/" + className + ".save").toPath();
+            Path assnFile = new File("data/assignments/" + className + ".save").toPath();
+            Path noteDir = new File("data/notes/" + className).toPath();
+            try
+            {
+            	Files.delete(hwFile);
+            	Files.delete(assnFile);
+            	Files.delete(noteDir);
+            }
+            catch(FileNotFoundException fnfe) { fnfe.printStackTrace(); }
+            catch(DirectoryNotEmptyException dnee) { dnee.printStackTrace(); }
+            catch(NoSuchFileException nsfe) {  }
+            catch(Exception exc) { exc.printStackTrace(); }
             int size = listModel.getSize();
             if (size == 0) 
             {
@@ -162,11 +177,12 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
     {
     	try
     	{
-    		FileInputStream fileIn = new FileInputStream("src/classes.save");
+    		FileInputStream fileIn = new FileInputStream("data/classes.save");
     		ObjectInputStream objectIn = new ObjectInputStream(fileIn);
     		classes = (ArrayList<MetroClass>)objectIn.readObject();
     		objectIn.close();
-    	} 
+    	}
+    	catch(java.io.FileNotFoundException fnfe) {  }
     	catch(Exception e) 
     	{ 
     		System.err.println("Exception caught on 'loadClasses': " + e); 
@@ -181,11 +197,12 @@ public class SubjectMenu extends JPanel implements ListSelectionListener
     {
     	try
     	{
-    		FileOutputStream fileOut = new FileOutputStream("src/classes.save");
+    		FileOutputStream fileOut = new FileOutputStream("data/classes.save");
     		ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
     		objectOut.writeObject(classes);
     		objectOut.close();
-    	} 
+    	}
+    	catch(java.io.FileNotFoundException fnfe) {  }
     	catch(Exception e) 
     	{ 
     		System.err.println("Exception caught on 'saveClasses': " + e);

@@ -30,6 +30,7 @@ public class FrameCore
 	public static void saveComponents()
 	{
 		SubjectMenu.saveClasses();
+		MSubjectMenu.saveComponents();
 	}
     public static void menuHandler(int priority, int index)
     {

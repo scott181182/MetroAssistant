@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.DisplayMode;
 import java.awt.GraphicsConfiguration;
@@ -12,6 +13,7 @@ public class MainFrame extends JFrame
 	public static DataFinder input = new DataFinder();
 	public static SubjectMenu subjectMenu;
 	public static OverviewMenu overviewMenu;
+	public static JPanel classMenu;
 	public static JPanel[] topMenus = { overviewMenu };
 	
 	public MainFrame()
@@ -26,6 +28,7 @@ public class MainFrame extends JFrame
         contentPane.setLayout(null);
         addSubjectMenu();
         addOverviewMenu();
+        addClassMenu();
         setVisible(true);
         createBufferStrategy(2);
 	}
@@ -42,6 +45,14 @@ public class MainFrame extends JFrame
     	overviewMenu.setBounds(320, 0, 960, 723);
     	overviewMenu.setOpaque(true);
     	getContentPane().add(overviewMenu);
+    }
+    public void addClassMenu()
+    {
+    	classMenu = new JPanel(null);
+    	classMenu.setBounds(323, 0, 960, 723);
+    	classMenu.setOpaque(true);
+    	classMenu.setVisible(false);
+    	getContentPane().add(classMenu);
     }
     
     /*
